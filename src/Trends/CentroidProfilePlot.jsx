@@ -14,8 +14,8 @@ const CentroidProfilePlot = observer((props) => {
     props.conditions.forEach((cond) => {
         const values = props.data.map(gene => gene[cond]);
         const mean = d3.mean(values)
-        centroids.push({cond: cond, value: mean});
         const stdDev = d3.deviation(values);
+        centroids.push({cond: cond, value: mean});
         lower.push({cond: cond, value: mean - stdDev});
         upper.push({cond: cond, value: mean + stdDev});
     })

@@ -2,6 +2,9 @@ import {observer} from "mobx-react";
 import PropTypes from "prop-types";
 import React from "react";
 import {useStore} from "../Stores/RootStore";
+import Tooltip from "@material-ui/core/Tooltip";
+import {v4 as uuidv4} from 'uuid';
+
 
 const Bands = observer((props) => {
     const store = useStore();
@@ -47,19 +50,25 @@ const Bands = observer((props) => {
                 const p4 = "C " + props.width / 2 + " " + (currPos2[i2] + height) + ", "
                     + props.width / 2 + " " + (currPos1 + height) + ", "
                     + "0 " + (currPos1 + height)
+                const gradientID = uuidv4();
                 paths.push(<g key={cluster1 + cluster2}>
                     <defs>
-                        <linearGradient id={cluster1 + cluster2} x1="0%" y1="0%" x2="100%" y2="0%">
+                        <linearGradient id={gradientID} x1="0%" y1="0%" x2="100%" y2="0%">
                             <stop offset="0%" style={{stopColor: fill2}}/>
                             <stop offset="100%" style={{stopColor: fill1}}/>
                         </linearGradient>
                     </defs>
-                    <path
-                        d={p1 + " " + p2 + " " + p3 + " " + p4 + " Z"} opacity={opacity}
-                        fill={"url(#" + cluster1 + cluster2 + ")"}
-                        onMouseEnter={() => store.setHighlightedIntersection([[cluster1, cluster2]])}
-                        onMouseLeave={() => store.setHighlightedIntersection([])}
-                        onClick={() => store.handleIntersectionSelection([cluster1, cluster2])}/>
+                    <Tooltip title={"Intersection size: " + props.intersections[cluster1 + "," + cluster2]}
+                             followCursor>
+                        <path
+                            d={p1 + " " + p2 + " " + p3 + " " + p4 + " Z"} opacity={opacity}
+                            fill={"url(#" + gradientID + ")"}
+                            onMouseEnter={() => store.setHighlightedIntersection([[cluster1, cluster2]])}
+                            onMouseLeave={() => store.setHighlightedIntersection([])}
+                            onClick={() => store.handleIntersectionSelection([cluster1, cluster2])}
+                            style={{cursor: "pointer"}}>
+                        </path>
+                    </Tooltip>
                 </g>)
                 // next position on ds1
                 currPos1 += height;

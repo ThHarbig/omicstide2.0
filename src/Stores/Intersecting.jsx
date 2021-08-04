@@ -75,6 +75,10 @@ export class Intersecting {
                 })
                 return intersections;
             },
+            /**
+             * get genes in selected intersections
+             * @returns {FlatArray<string[], 1>[]}
+             */
             get selectedGenes(){
                 return Object.values(this.selectedGenesIntersections).flat();
             },
@@ -118,6 +122,9 @@ export class Intersecting {
                         .forEach(currInd => this.selectedIntersections.push(currInd))
                 }
             },
+            /**
+             * clears selection completely
+             */
             clearSelection(){
                 this.selectedIntersections=[]
             },

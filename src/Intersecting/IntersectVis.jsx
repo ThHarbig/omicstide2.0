@@ -19,23 +19,26 @@ const IntersectVis = observer((props) => {
     const profiles = createRef();
 
     // states for widths of plots
-    const [sankeyWidth, setSankeyWidth] = useState(1);
-    const [profilesWidth, setProfilesWidth] = useState(1);
+    const [sankeyWidth, setSankeyWidth] = useState(100);
+    const [profilesWidth, setProfilesWidth] = useState(100);
     const height = 800;
     const changeWidth = useCallback(() => {
-        if (sankey.current != null) {
-            setSankeyWidth(sankey.current.getBoundingClientRect().width)
+        if (props.isVisible && sankey.current !== null && profiles.current !== null) {
+            const sankeyWidth = sankey.current.getBoundingClientRect().width;
+            const profilesWidth = profiles.current.getBoundingClientRect().width;
+            setSankeyWidth(sankeyWidth)
+            setProfilesWidth(profilesWidth)
         }
-        if (profiles.current != null) {
-            setProfilesWidth(profiles.current.getBoundingClientRect().width)
-        }
-    }, [sankey, profiles]);
+    }, [props.isVisible, sankey, profiles])
 
     // change width when window is resized
     useEffect(() => {
         changeWidth();
         window.addEventListener("resize", changeWidth);
-    }, [profiles, sankey, changeWidth]);
+        return () => {
+            window.removeEventListener('resize', changeWidth);
+        }
+    }, [changeWidth]);
 
     return (
         <div style={{padding: 10}}>
@@ -112,5 +115,6 @@ const IntersectVis = observer((props) => {
 
 IntersectVis.propTypes = {
     conditions: PropTypes.arrayOf(PropTypes.string).isRequired,
+    isVisible: PropTypes.bool.isRequired,
 };
 export default IntersectVis;
