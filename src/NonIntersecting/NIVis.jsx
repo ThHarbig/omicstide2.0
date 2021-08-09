@@ -17,6 +17,7 @@ const NIVis = observer((props) => {
     const profiles = createRef();
     const [width, setWidth] = useState(1000);
     const height = 800;
+    const numClusters = Math.max(store.ds1.filteredClusterNames.length, store.ds2.filteredClusterNames.length);
     const changeWidth = useCallback(() => {
         if (props.isVisible && profiles.current !== null) {
             setWidth(profiles.current.getBoundingClientRect().width)
@@ -62,7 +63,8 @@ const NIVis = observer((props) => {
                         <Grid item xs={4}>
                             <div ref={profiles}>
                                 <StoreProvider store={store.ds1}>
-                                    <DatasetTrends clusterNames={store.clusterNames} colorScale={store.colorScale}
+                                    <DatasetTrends colorScale={store.colorScale}
+                                                   numClusters={numClusters}
                                                    conditions={props.conditions}
                                                    minValue={store.minValue}
                                                    maxValue={store.maxValue}
@@ -82,7 +84,8 @@ const NIVis = observer((props) => {
 
                         <Grid item xs={4}>
                             <StoreProvider store={store.ds2}>
-                                <DatasetTrends clusterNames={store.clusterNames} colorScale={store.colorScale}
+                                <DatasetTrends colorScale={store.colorScale}
+                                               numClusters={numClusters}
                                                conditions={props.conditions}
                                                minValue={store.minValue}
                                                maxValue={store.maxValue}

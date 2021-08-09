@@ -15,14 +15,14 @@ export class NIDataset {
         extendObservable(this, {
             highlightedClusters: [],
             selectedClusters: [],
-             /**
+            /**
              * brings data in a convenient form for centroid profile plots
              * @returns {{Object}}
              */
             get conditionMapping() {
                 return conditionMapping(this.clusters, this.genes, this.parent.dataStore.conditions)
             },
-             /**
+            /**
              * brings data in a convenient form for normal profile plots
              * @returns {{Object}}
              */
@@ -59,7 +59,7 @@ export class NIDataset {
             get numFilteredGenes() {
                 return (d3.sum(Object.keys(this.clusters).map(cluster => this.clusters[cluster].length)))
             },
-             /**
+            /**
              * gets selected genes in a convinent form for multi profile plots
              * @returns {{Object}}
              */
@@ -74,12 +74,15 @@ export class NIDataset {
              * gets selected genes in clusters
              * @returns {[]}
              */
-            get selectedGenes(){
-                let genes=[]
+            get selectedGenes() {
+                let genes = []
                 this.selectedClusters.forEach(cluster => {
                     genes.push(...this.clusters[cluster])
                 })
-                return(genes);
+                return (genes);
+            },
+            get filteredClusterNames() {
+                return this.parent.clusterNames.filter(cluster => this.clusterSizes[cluster] > 0)
             },
             /**
              * sets highlighted cluster
@@ -104,8 +107,8 @@ export class NIDataset {
             /**
              * clears selection completely
              */
-            clearSelection(){
-                this.selectedClusters =[];
+            clearSelection() {
+                this.selectedClusters = [];
             }
         })
 

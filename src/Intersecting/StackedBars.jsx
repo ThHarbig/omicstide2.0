@@ -9,7 +9,7 @@ const StackedBars = observer((props) => {
     // current position for placement of bars
     let currPos = 0;
     const rects = [];
-    props.clusterNames.forEach((cluster, i) => {
+    store.filteredClusterNames.forEach((cluster, i) => {
         // highlighting
         let opacity = 0.7;
         if (store.highlightedClusters.length > 0) {
@@ -21,7 +21,7 @@ const StackedBars = observer((props) => {
         }
         // height of current bar
         const height = props.yScale(props.data[cluster])
-        rects.push(<Tooltip title={"Cluster size: "+ props.data[cluster]} followCursor>
+        rects.push(<Tooltip title={"Cluster size: " + props.data[cluster]} followCursor>
             <rect key={cluster} height={height} y={currPos} width={props.rectWidth}
                   fill={props.colorScale(cluster)} opacity={opacity}
                   onMouseEnter={() => store.setHighlightedCluster(cluster)}
@@ -36,7 +36,6 @@ const StackedBars = observer((props) => {
 
 StackedBars.propTypes = {
     data: PropTypes.objectOf(PropTypes.number).isRequired,
-    clusterNames: PropTypes.arrayOf(PropTypes.string).isRequired,
     yScale: PropTypes.func.isRequired,
     rectWidth: PropTypes.number.isRequired,
     whiteSpace: PropTypes.number.isRequired

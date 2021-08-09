@@ -56,11 +56,11 @@ export class IntersectionDataset {
              * @returns {{Object}}
              */
             get geneSelection() {
-                let clusters={}
-                Object.keys(this.parent.selectedGenesIntersections).forEach(intersection =>{
+                let clusters = {}
+                Object.keys(this.parent.selectedGenesIntersections).forEach(intersection => {
                     const key = intersection.split(',')[this.index];
-                    if(!(key in clusters)){
-                        clusters[key]=[]
+                    if (!(key in clusters)) {
+                        clusters[key] = []
                     }
                     clusters[key].push(...this.parent.selectedGenesIntersections[intersection]);
                 })
@@ -83,6 +83,9 @@ export class IntersectionDataset {
                     selectedClusters.push(intersection[this.index])
                 })
                 return selectedClusters;
+            },
+            get filteredClusterNames() {
+                return this.parent.clusterNames.filter(cluster => this.clusterSizes[cluster] > 0)
             },
             /**
              * update clusters based on intersections

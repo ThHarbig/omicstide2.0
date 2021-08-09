@@ -55,12 +55,14 @@ const DefaultView = observer((props) => {
                     .then((response) => {
                         store.init(response.data, varFilter);
                         props.setDataLoaded(true);
+                        setDataLoading(false)
                     })
             } else if (testData === "s") {
                 axios.post("/load_test_data_streptomyces", formData)
                     .then((response) => {
                         store.init(response.data, varFilter);
                         props.setDataLoaded(true);
+                        setDataLoading(false)
                     })
             } else {
                 files.forEach(file => formData.append("files[]", file));
@@ -68,6 +70,7 @@ const DefaultView = observer((props) => {
                     .then((response) => {
                         store.init(response.data, varFilter);
                         props.setDataLoaded(true);
+                        setDataLoading(false)
 
                     })
             }
@@ -172,7 +175,7 @@ const DefaultView = observer((props) => {
                             {varFilter[0] + "< var <" + varFilter[1]}
                         </Grid>
                     </Grid>
-                    <Button onClick={launch} variant="contained">Launch</Button>
+                    <Button onClick={launch} disabled={dataLoading || (files.length === 0 && testData ==="")} variant="contained">Launch</Button>
 
                 </Grid>
                 {dataLoading ?

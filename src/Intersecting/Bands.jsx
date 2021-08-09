@@ -16,14 +16,14 @@ const Bands = observer((props) => {
     // helper to fill currPos2
     let currPos = 0;
     // fill currPos2 with y positions of nodes at ds2
-    store.clusterNames.forEach((cluster, i) => {
-        const height = props.yScale(props.clusters2[cluster])
+    store.ds2.filteredClusterNames.forEach((cluster, i) => {
+        const height = props.yScale(store.ds2.clusterSizes[cluster])
         currPos2.push(currPos)
         currPos += height + props.whiteSpace
     })
     // iterate through clusters of both data sets
-    store.clusterNames.forEach((cluster1) => {
-        store.clusterNames.forEach((cluster2, i2) => {
+    store.ds1.filteredClusterNames.forEach((cluster1) => {
+        store.ds2.filteredClusterNames.forEach((cluster2, i2) => {
             // if there is an intersection, draw a band
             if ([cluster1, cluster2] in props.intersections) {
                 const fill1 = props.colorScale(cluster1);
@@ -75,6 +75,7 @@ const Bands = observer((props) => {
                 // save next position of ds2 for current ds2 cluster
                 currPos2[i2] += height;
             }
+
         })
         // add whitespace to currPos1 when finished with a cluster
         currPos1 += props.whiteSpace;
@@ -86,8 +87,6 @@ const Bands = observer((props) => {
 });
 
 Bands.propTypes = {
-    clusters1: PropTypes.objectOf(PropTypes.number).isRequired,
-    clusters2: PropTypes.objectOf(PropTypes.number).isRequired,
     intersections: PropTypes.objectOf(PropTypes.number).isRequired,
     yScale: PropTypes.func.isRequired,
     colorScale: PropTypes.func.isRequired,
